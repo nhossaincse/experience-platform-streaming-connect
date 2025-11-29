@@ -5,31 +5,19 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:latest
-        options: --privileged
     steps:
       - uses: actions/checkout@v4
-      
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'  # Closest to Oracle JDK 
+          distribution: temurin
           java-version: '8'
-      
-      - name: Cache Gradle packages
+      - name: Cache Maven packages
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
-      
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-      
+            ${{ runner.os }}-m2-
       - name: Build with Gradle
         run: ./gradlew clean build
