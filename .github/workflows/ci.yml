@@ -15,7 +15,7 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'  # Closest to Oracle JDK
+          distribution: 'zulu'  # Closest to Oracle JDK 
           java-version: '8'
       
       - name: Cache Gradle packages
